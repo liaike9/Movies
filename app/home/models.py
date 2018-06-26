@@ -61,7 +61,7 @@ class Movie(db.Model):
     star = db.Column(db.SmallInteger)  # 星级  小整形
     playnum = db.Column(db.BigInteger)  # 播放量
     commentnum = db.Column(db.BigInteger)  # 评论量
-    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))  # 所属标签
+    # tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))  # 所属标签
     area = db.Column(db.String(255))  # 上映地区
     release_time = db.Column(db.Date)  # 上映时间
     length = db.Column(db.String(100))  # 播放时间
@@ -147,7 +147,11 @@ class Admin(db.Model):
     oplogs = db.relationship("Oplog", backref='admin')  # 管理员操作日志外键关系关联
 
     def __repr__(self):
-        return "<Role %r>" % self.name
+        return "<Admin %r>" % self.name
+    # 解密
+    def check_pwd(self, pwd):
+        from werkzeug.security import check_password_hash
+        return check_password_hash(self.pwd, pwd)
 
 
 # 管理员登录日志
